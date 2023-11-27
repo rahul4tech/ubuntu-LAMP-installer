@@ -3,7 +3,7 @@
 
 # There Are 2 Ways To Use This Script
 #### 1. Run The Script For Fresh Lamp Stack Installation
-#### 2. Run The Script For Fresh Lamp Stack Installation And RSYNC /var/www/html/ From Another Server
+#### 2. Run The Script For Fresh Lamp Stack Installation And SCP /var/www/html/ Source From Another Server
 <hr/>
 
 ##### You can run this script remotely on any Ubuntu based Linux machine using following command:

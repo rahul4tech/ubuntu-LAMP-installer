@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Ask which way to install, then install lamp stack or with /var/www/html rsync from another server
+# Ask which way to install, then install lamp stack or with /var/www/html scp from another server
 
 # clear the screen
 clear
@@ -14,7 +14,7 @@ echo ""
 # Ask which way to install
 echo "Which way to install?"
 echo "1. Install LAMP stack"
-echo "2. Install LAMP stack with /var/www/html rsync from another server"
+echo "2. Install LAMP stack with /var/www/html scp from another server"
 read -p "Enter your choice: " choice
 
 # check if $choice is empty or not integer
@@ -67,9 +67,25 @@ EOF
 
         # mv /var/www/html to /var/www/html-orig
         sudo mv /var/www/html /var/www/html-orig > /dev/null 2>&1
-        # ask for rsync server ip
-        read -p "Enter rsync server ip: " rsync_server_ip
-        sudo rsync -avzh --progress root@$rsync_server_ip:/var/www/html /var/www/html
+        
+        # ask for scp server ip and username
+        read -p "Enter scp server ip: " scp_ip
+        read -p "Enter scp server username: " scp_username
+        sudo scp -oHostKeyAlgorithms=+ssh-rsa $scp_username@$scp_ip:/var/www/html/shortner_code_zip/shortner_redirector_source_code.zip /var/www/ > /dev/null 2>&1
+
+        # check if scp is successful
+        if [ $? -eq 0 ]
+        then
+            echo "scp successful"
+        else
+            echo "scp failed, exiting..."
+            exit 1
+        fi
+
+        sudo unzip -d /var/www/ /var/www/shortner_redirector_source_code.zip
+        sudo rm -rf /var/www/shortner_redirector_source_code.zip
+        sudo rm -rf /var/www/html
+        sudo mv /var/www/shortner_redirector_source_code /var/www/html
     fi
     sudo systemctl restart apache2 > /dev/null 2>&1
 
