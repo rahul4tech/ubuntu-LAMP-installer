@@ -69,7 +69,7 @@ EOF
         sudo mv /var/www/html /var/www/html-orig > /dev/null 2>&1
         # ask for rsync server ip
         read -p "Enter rsync server ip: " rsync_server_ip
-        rsync -avzh --progress root@$rsync_server_ip:/var/www/html /var/www/html
+        sudo rsync -avzh --progress root@$rsync_server_ip:/var/www/html /var/www/html
     fi
     sudo systemctl restart apache2 > /dev/null 2>&1
 
