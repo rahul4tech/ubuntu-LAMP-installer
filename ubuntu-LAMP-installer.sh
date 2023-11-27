@@ -49,7 +49,7 @@ then
     sudo a2enmod rewrite > /dev/null 2>&1
 
     apache2_conf=$(cat <<EOF
-# CONFIGURED BY UBU-LAMP-INSTALLER
+# CONFIGURED BY UBUNTU-LAMP-INSTALLER
 <Directory /var/www/html>
     Options Indexes FollowSymLinks
     AllowOverride All
@@ -57,6 +57,18 @@ then
 </Directory>
 EOF
 )
+
+    # check if /etc/apache2/apache2.conf-orig exists if not then mv /etc/apache2/apache2.conf to /etc/apache2/apache2.conf-orig
+    if [ ! -f /etc/apache2/apache2.conf-orig ]
+    then
+        sudo mv /etc/apache2/apache2.conf /etc/apache2/apache2.conf-orig > /dev/null 2>&1
+    fi
+
+    # Delete /etc/apache2/apache2.conf 
+    sudo rm -rf /etc/apache2/apache2.conf > /dev/null 2>&1
+
+    # copy /etc/apache2/apache2.conf-orig to /etc/apache2/apache2.conf
+    sudo cp /etc/apache2/apache2.conf-orig /etc/apache2/apache2.conf > /dev/null 2>&1
 
     # append apache2.conf with $apache2_conf
     echo "$apache2_conf" | sudo tee -a /etc/apache2/apache2.conf > /dev/null 2>&1
